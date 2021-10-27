@@ -36,11 +36,11 @@ func (b *Blockchain) AddTransaction(transaction block.Transaction) {
 }
 
 func (b *Blockchain) addBlock(proof int, previousHash string) block.Block {
-	block := block.New(proof, previousHash)
-	b.chain = append(b.chain, block)
-	b.Transactions = nil
+	newBlock := block.New(proof, previousHash)
+	b.chain = append(b.chain, newBlock)
+	b.Transactions = make(block.Transactions, 0)
 
-	return block
+	return newBlock
 }
 
 func (b Blockchain) Chain() <-chan block.Block {
