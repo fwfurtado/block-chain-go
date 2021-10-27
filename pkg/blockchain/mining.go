@@ -16,10 +16,12 @@ func (b *Blockchain) Mine() (*block.Block, error) {
 		return nil, ErrorEmptyBlockchain
 	}
 
+	txs := b.Transactions.TakeGreatestAmount(5)
+
 	proof := generateProofOfWorkBy(previous.Proof)
 	previousHash := hashing.From(*previous)
 
-	block := b.addBlock(proof, previousHash)
+	block := b.addBlock(proof, previousHash, txs)
 
 	return &block, nil
 }

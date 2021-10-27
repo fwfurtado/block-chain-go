@@ -35,12 +35,26 @@ func (b *Blockchain) AddTransaction(transaction block.Transaction) {
 	b.Transactions = append(b.Transactions, transaction)
 }
 
-func (b *Blockchain) addBlock(proof int, previousHash string) block.Block {
+func (b *Blockchain) addBlock(proof int, previousHash string, txs block.Transactions) block.Block {
 	newBlock := block.New(proof, previousHash)
 	b.chain = append(b.chain, newBlock)
-	b.Transactions = make(block.Transactions, 0)
+	newBlock.Transactions = txs
+
+	b.Transactions = b.removeItsTransactions(txs)
 
 	return newBlock
+}
+
+func (b Blockchain) removeItsTransactions(txs block.Transactions) block.Transactions {
+	output := make(block.Transactions, 0)
+
+	for _, tx := range b.Transactions {
+		if !txs.Has(tx) {
+			output = append(output, tx)
+		}
+	}
+
+	return output
 }
 
 func (b Blockchain) Chain() <-chan block.Block {
