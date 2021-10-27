@@ -1,77 +1,58 @@
 package blockchain
 
 import (
-	"errors"
-
-	"github.com/fwfurtado/blockchain-go/pkg/hashing"
+	"github.com/fwfurtado/blockchain-go/pkg/block"
 )
 
-var ErrorBlockChainEmpty = errors.New("blockchain is empty")
-
 type Blockchain struct {
-	Chain Blocks
+	chain        block.Blocks
+	Transactions block.Transactions
 }
 
 func New() Blockchain {
 
-	chain := make(Blocks, 1)
+	genesis := block.CreateGenesis()
 
-	genesis := createBlock(1, "0")
+	chain := block.Blocks{genesis}
 
-	chain[0] = genesis
+	transactions := make(block.Transactions, 0)
 
 	return Blockchain{
-		Chain: chain,
+		chain:        chain,
+		Transactions: transactions,
 	}
 }
 
-func (b *Blockchain) Mine() (*Block, error) {
-	previous, ok := b.lastBlock()
-
-	if !ok {
-		return nil, ErrorBlockChainEmpty
-	}
-
-	proof := generateProofOfWorkBy(previous.Proof)
-	previousHash := hashing.From(*previous)
-
-	block := b.create(proof, previousHash)
-
-	return &block, nil
+func (b Blockchain) Length() int {
+	return len(b.chain)
 }
 
-func (b Blockchain) lastBlock() (*Block, bool) {
-	size := len(b.Chain)
-
-	if size > 0 {
-		return &b.Chain[size-1], true
-	}
-
-	return nil, false
+func (b Blockchain) LastBlock() (*block.Block, bool) {
+	return b.chain.LastBlock()
 }
 
-func (b *Blockchain) create(proof int, previousHash string) Block {
-	block := createBlock(proof, previousHash)
-	b.Chain = append(b.Chain, block)
+func (b *Blockchain) AddTransaction(transaction block.Transaction) {
+	b.Transactions = append(b.Transactions, transaction)
+}
+
+func (b *Blockchain) addBlock(proof int, previousHash string) block.Block {
+	block := block.New(proof, previousHash)
+	b.chain = append(b.chain, block)
+	b.Transactions = nil
 
 	return block
 }
 
-func (b Blockchain) IsValid() bool {
+func (b Blockchain) Chain() <-chan block.Block {
+	generator := make(chan block.Block)
 
-	for previousIndex, block := range b.Chain[1:] {
-
-		previous := b.Chain[previousIndex]
-		previousHash := hashing.From(previous)
-		if block.Previous != previousHash {
-			return false
+	go func() {
+		for _, block := range b.chain {
+			generator <- block
 		}
 
-		if !solveThePuzzle(previous.Proof, block.Proof) {
-			return false
-		}
+		close(generator)
+	}()
 
-	}
-
-	return true
+	return generator
 }

@@ -20,6 +20,8 @@ type blockchainOutput struct {
 	Chain []blockOutput `json:"chain"`
 }
 
+type blocksOutput []blockOutput
+
 func main() {
 	shitCoin := blockchain.New()
 
@@ -37,9 +39,11 @@ func main() {
 
 func mapping(bc blockchain.Blockchain) blockchainOutput {
 
-	newChain := make([]blockOutput, len(bc.Chain))
+	newChain := make(blocksOutput, bc.Length())
 
-	for index, block := range bc.Chain {
+	index := 0
+
+	for block := range bc.Chain() {
 		newBlock := blockOutput{
 			Proof:        block.Proof,
 			Timestamp:    block.Timestamp,
@@ -48,6 +52,7 @@ func mapping(bc blockchain.Blockchain) blockchainOutput {
 		}
 
 		newChain[index] = newBlock
+		index++
 	}
 
 	return blockchainOutput{
