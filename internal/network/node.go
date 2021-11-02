@@ -5,8 +5,6 @@ type Node struct {
 	Port    int
 }
 
-type Network []Node
-
-func (n *Network) AddNode(node Node) {
-	*n = append(*n, node)
+func (n Node) ConnectTo(network Network) {
+	network = append(network, n)
 }
