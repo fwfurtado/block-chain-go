@@ -3,7 +3,7 @@ package blockchain
 import (
 	"strings"
 
-	"github.com/fwfurtado/blockchain-go/pkg/hashing"
+	"github.com/fwfurtado/blockchain-go/internal/hashing"
 )
 
 const hashPrefix = "00000"

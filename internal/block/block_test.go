@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/shopspring/decimal"
 
-	"github.com/fwfurtado/blockchain-go/pkg/block"
+	"github.com/fwfurtado/blockchain-go/internal/block"
 )
 
 type tx struct {

@@ -1,7 +1,7 @@
 package blockchain
 
 import (
-	"github.com/fwfurtado/blockchain-go/pkg/block"
+	"github.com/fwfurtado/blockchain-go/internal/block"
 )
 
 type Blockchain struct {

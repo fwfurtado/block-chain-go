@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/shopspring/decimal"
 
-	"github.com/fwfurtado/blockchain-go/pkg/role"
+	"github.com/fwfurtado/blockchain-go/internal/role"
 )
 
 var _ = Describe("Role", func() {

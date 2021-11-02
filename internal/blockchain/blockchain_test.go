@@ -6,9 +6,9 @@ import (
 	. "github.com/onsi/gomega"
 	"github.com/shopspring/decimal"
 
-	"github.com/fwfurtado/blockchain-go/pkg/block"
-	"github.com/fwfurtado/blockchain-go/pkg/blockchain"
-	"github.com/fwfurtado/blockchain-go/pkg/hashing"
+	"github.com/fwfurtado/blockchain-go/internal/block"
+	"github.com/fwfurtado/blockchain-go/internal/blockchain"
+	"github.com/fwfurtado/blockchain-go/internal/hashing"
 )
 
 type tx struct {

@@ -1,8 +1,8 @@
 package role
 
 import (
-	"github.com/fwfurtado/blockchain-go/pkg/block"
-	"github.com/fwfurtado/blockchain-go/pkg/transaction"
+	"github.com/fwfurtado/blockchain-go/internal/block"
+	"github.com/fwfurtado/blockchain-go/internal/transaction"
 )
 
 type Sender struct {

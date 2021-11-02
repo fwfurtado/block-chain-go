@@ -1,6 +1,6 @@
 package blockchain
 
-import "github.com/fwfurtado/blockchain-go/pkg/hashing"
+import "github.com/fwfurtado/blockchain-go/internal/hashing"
 
 func (b Blockchain) IsValid() bool {
 
