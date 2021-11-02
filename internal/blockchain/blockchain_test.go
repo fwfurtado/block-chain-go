@@ -9,6 +9,7 @@ import (
 	"github.com/fwfurtado/blockchain-go/internal/block"
 	"github.com/fwfurtado/blockchain-go/internal/blockchain"
 	"github.com/fwfurtado/blockchain-go/internal/hashing"
+	"github.com/fwfurtado/blockchain-go/internal/transaction"
 )
 
 type tx struct {
@@ -28,12 +29,12 @@ func (t tx) Amount() decimal.Decimal {
 	return decimal.NewFromFloat(t.amount)
 }
 
-func newTx(amount float64) tx {
-	return tx{
-		amount:   amount,
-		sender:   uuid.NewString(),
-		reciever: uuid.NewString(),
-	}
+func newTx(amount float64) transaction.Transaction {
+	return transaction.New(
+		uuid.NewString(),
+		uuid.NewString(),
+		amount,
+	)
 }
 
 var _ = Describe("Blockchain", func() {
@@ -56,7 +57,7 @@ var _ = Describe("Blockchain", func() {
 			})
 
 			It("should has an empty list of trasactions", func() {
-				Expect(len(chain.Transactions)).Should(Equal(0))
+				Expect(chain.TotalTransctions()).Should(Equal(0))
 			})
 
 			It("should be valid chain", func() {
@@ -102,11 +103,11 @@ var _ = Describe("Blockchain", func() {
 		Context("with less transactions than maximum peer block", func() {
 
 			var (
-				transactions block.Transactions
+				transactions transaction.Transactions
 			)
 
 			BeforeEach(func() {
-				transactions = block.Transactions{
+				transactions = transaction.Transactions{
 					newTx(50),
 					newTx(30),
 					newTx(20),
@@ -116,7 +117,7 @@ var _ = Describe("Blockchain", func() {
 
 			It("should add a new block and remove mined transactions", func() {
 				By("starting blockchain without transactions")
-				Expect(len(chain.Transactions)).Should(Equal(0))
+				Expect(chain.TotalTransctions()).Should(Equal(0))
 
 				By("add less transactions then maximum per block")
 				for _, tx := range transactions {
@@ -124,15 +125,15 @@ var _ = Describe("Blockchain", func() {
 				}
 
 				By("blockchain transactions should has the same quantity of transaction added")
-				Expect(len(chain.Transactions)).Should(Equal(len(transactions)))
+				Expect(chain.TotalTransctions()).Should(Equal(len(transactions)))
 
 				By("should clear the transactions when mine a blockchain with less then minimum transactions")
 				mined, _ := chain.Mine()
-				Expect(len(chain.Transactions)).Should(Equal(0))
+				Expect(chain.TotalTransctions()).Should(Equal(0))
 
 				By("Mined block should have all transactions")
-				Expect(len(mined.Transactions)).Should(Equal(len(transactions)))
-				for _, tx := range mined.Transactions {
+				Expect(mined.TotalTransctions()).Should(Equal(len(transactions)))
+				for tx := range mined.StreamTransactions() {
 					Expect(transactions.Has(tx)).Should(BeTrue())
 				}
 

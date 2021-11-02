@@ -2,13 +2,15 @@ package block
 
 import (
 	"time"
+
+	"github.com/fwfurtado/blockchain-go/internal/transaction"
 )
 
 type Block struct {
 	Proof        int
 	Timestamp    time.Time
 	Previous     string
-	Transactions Transactions
+	transactions transaction.Transactions
 }
 
 type Blocks []Block
@@ -18,7 +20,7 @@ func New(proof int, previousHash string) Block {
 		Proof:        proof,
 		Timestamp:    time.Now().UTC(),
 		Previous:     previousHash,
-		Transactions: make(Transactions, 0),
+		transactions: make(transaction.Transactions, 0),
 	}
 }
 
@@ -26,8 +28,8 @@ func CreateGenesis() Block {
 	return New(1, "0")
 }
 
-func (b *Block) AddTx(transaction Transaction) {
-	b.Transactions = append(b.Transactions, transaction)
+func (b *Block) AddTx(transaction transaction.Transaction) {
+	b.transactions = append(b.transactions, transaction)
 }
 
 func (bs Blocks) LastBlock() (*Block, bool) {

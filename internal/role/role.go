@@ -1,7 +1,6 @@
 package role
 
 import (
-	"github.com/fwfurtado/blockchain-go/internal/block"
 	"github.com/fwfurtado/blockchain-go/internal/transaction"
 )
 
@@ -25,7 +24,7 @@ func (s Sender) Id() string {
 	return s.id
 }
 
-func (s Sender) Transfer(receiver Reciever, amount float64) block.Transaction {
+func (s Sender) Transfer(receiver Reciever, amount float64) transaction.Transaction {
 	return transaction.New(
 		s.id,
 		receiver.id,

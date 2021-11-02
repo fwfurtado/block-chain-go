@@ -43,7 +43,7 @@ func mapping(bc blockchain.Blockchain) blockchainOutput {
 
 	index := 0
 
-	for block := range bc.Chain() {
+	for block := range bc.BlockStream() {
 		newBlock := blockOutput{
 			Proof:        block.Proof,
 			Timestamp:    block.Timestamp,
