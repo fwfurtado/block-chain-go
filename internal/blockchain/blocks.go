@@ -36,7 +36,3 @@ func (b Blockchain) BlockStream() <-chan block.Block {
 
 	return generator
 }
-
-func (b Blockchain) Replace(blocks block.Blocks) {
-	b.chain = blocks
-}
