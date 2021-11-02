@@ -10,7 +10,7 @@ func (b *Blockchain) addBlock(proof int, previousHash string, txs transaction.Tr
 	b.chain = append(b.chain, newBlock)
 	newBlock.ReplaceTxs(txs)
 
-	b.transactions = b.removeItsTransactions(txs)
+	b.openTransactions = b.removeItsTransactions(txs)
 
 	return newBlock
 }

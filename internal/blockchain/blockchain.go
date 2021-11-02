@@ -7,7 +7,7 @@ import (
 
 type Blockchain struct {
 	chain        block.Blocks
-	transactions transaction.Transactions
+	openTransactions transaction.Transactions
 }
 
 func New() Blockchain {
@@ -20,6 +20,6 @@ func New() Blockchain {
 
 	return Blockchain{
 		chain:        chain,
-		transactions: transactions,
+		openTransactions: transactions,
 	}
 }

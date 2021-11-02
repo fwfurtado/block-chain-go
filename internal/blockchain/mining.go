@@ -16,7 +16,7 @@ func (b *Blockchain) Mine() (*block.Block, error) {
 		return nil, ErrorEmptyBlockchain
 	}
 
-	txs := b.transactions.TakeGreatestAmount(5)
+	txs := b.openTransactions.TakeGreatestAmount(5)
 
 	proof := generateProofOfWorkBy(previous.Proof)
 	previousHash := hashing.From(*previous)

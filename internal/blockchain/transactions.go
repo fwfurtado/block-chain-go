@@ -5,13 +5,13 @@ import (
 )
 
 func (b *Blockchain) AddTransaction(transaction transaction.Transaction) {
-	b.transactions = append(b.transactions, transaction)
+	b.openTransactions = append(b.openTransactions, transaction)
 }
 
 func (b Blockchain) removeItsTransactions(txs transaction.Transactions) transaction.Transactions {
 	output := make(transaction.Transactions, 0)
 
-	for _, tx := range b.transactions {
+	for _, tx := range b.openTransactions {
 		if !txs.Has(tx) {
 			output = append(output, tx)
 		}
@@ -21,5 +21,5 @@ func (b Blockchain) removeItsTransactions(txs transaction.Transactions) transact
 }
 
 func (b Blockchain) TotalTransctions() int {
-	return len(b.transactions)
+	return len(b.openTransactions)
 }
