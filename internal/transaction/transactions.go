@@ -4,20 +4,6 @@ import "sort"
 
 type Transactions []Transaction
 
-type byAmountDesc Transactions
-
-func (txs byAmountDesc) Len() int {
-	return len(txs)
-}
-
-func (txs byAmountDesc) Less(i, j int) bool {
-	return txs[i].Amount().GreaterThan(txs[j].Amount())
-}
-
-func (txs byAmountDesc) Swap(i, j int) {
-	txs[i], txs[j] = txs[j], txs[i]
-}
-
 func (transactions Transactions) TakeGreatestAmount(n int) Transactions {
 	temp := make(Transactions, len(transactions))
 

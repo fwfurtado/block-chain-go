@@ -1,8 +1,13 @@
 package transaction
 
-import "github.com/shopspring/decimal"
+import (
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 type Transaction struct {
+	time     time.Time
 	sender   string
 	reciever string
 	amount   decimal.Decimal
@@ -13,6 +18,7 @@ func New(sender, receiver string, amount float64) Transaction {
 		sender:   sender,
 		reciever: receiver,
 		amount:   decimal.NewFromFloat(amount),
+		time:     time.Now().UTC(),
 	}
 }
 
