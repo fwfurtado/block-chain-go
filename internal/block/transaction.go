@@ -22,3 +22,7 @@ func (b Block) StreamTransactions() <-chan transaction.Transaction {
 func (b *Block) ReplaceTxs(transactions transaction.Transactions) {
 	b.transactions = transactions
 }
+
+func (b *Block) AddTx(transaction transaction.Transaction) {
+	b.transactions = append(b.transactions, transaction)
+}

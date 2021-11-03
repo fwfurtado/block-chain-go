@@ -6,15 +6,17 @@ func (n *Network) Connect(node Node) {
 	*n = append(*n, node)
 }
 
-func (n Network) MaxNode() Node {
-	max := n[0]
-
-	for _, node := range n {
-
-		if node.Size() > max.Size() {
-			max = node
-		}
+func (n Network) SelectNode(compare func(a, b Node) Node) (*Node, bool) {
+	if len(n) == 0 {
+		return nil, false
 	}
 
-	return max
+	result := n[0]
+
+	for _, node := range n[1:] {
+
+		result = compare(result, node)
+	}
+
+	return &result, true
 }
